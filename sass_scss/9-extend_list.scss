@@ -1,0 +1,17 @@
+/* My style */
+.info{
+    font-size: 12px;
+    &success{
+        @extend .info;
+    }
+    &warning{
+        @extend .info;
+    }
+}
+.success {
+    color: #00FF00;
+}
+  
+  .warning {
+    color: #FF0000; 
+}

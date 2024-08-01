@@ -1,0 +1,11 @@
+/* My style */
+@mixin margin-equal($val:10px){
+    margin-left: $val;
+    margin-right: $val;
+}
+body{
+    @include margin-equal
+}
+div{
+    @include margin-equal($val:15px)
+}
