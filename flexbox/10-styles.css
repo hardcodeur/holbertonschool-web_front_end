@@ -360,12 +360,12 @@
   }
 
   .section-hero .section-category{
-    padding: 10rem 4rem;
+    color: var(--color-white);
+    text-transform: uppercase;
   }
   
   .section-hero .section-title {
-    color: var(--color-white);
-    text-transform: uppercase;
+    margin-bottom: 5rem;
   }
   
   .section-hero .section-inner {
