@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS cookies/session</title>
+</head>
+<body>
+    <style>
+        .row{
+            display: flex;
+        }
+    </style>
+    <main>
+        <div>
+            <h1>Login to the website</h1>
+            <div class="row">
+                <input type="text" required name="firstname" id="firstname">
+                <input type="text" required name="email" id="email">
+                <button type="button" id="logBtn">Log me in</button>
+            </div>
+        </div>
+        <div>
+            <h1>Cookies</h1>
+            <button type="button" id="cookiesBtn">Show the cookies</button>
+            
+        </div>
+    </main>
+    <script>
+        document.querySelector("#logBtn").addEventListener("click",(e)=>{
+            setCookies();
+        });
+        document.querySelector("#cookiesBtn").addEventListener("click",(e)=>{
+            showCookies();
+        });
+
+        function setCookies(){
+            const d = new Date();
+            d.setTime(d.getTime() + (10*60*60*1000));
+            let expires =`expires= ${d.toUTCString()}`;
+
+            let firstname = document.querySelector("#firstname").value;
+            document.cookie = `firstname=${firstname};${expires}`;
+
+            let email = document.querySelector("#email").value;
+            document.cookie = `email=${email};${expires}`;
+        };
+
+        function showCookies(){
+            console.log(document.cookie);
+            
+            let cookies = document.cookie.split(';')
+            let showBoxe=document.querySelector("#cookiesBtn").parentElement
+            cookies.forEach(cookie => {
+                let p=document.createElement("p");
+                p.innerHTML= `Cookies: ${cookie}`;
+                showBoxe.appendChild(p); 
+            });
+        };
+    </script>
+</body>
+</html>

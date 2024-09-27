@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS cookies/session</title>
+</head>
+<body>
+    <style>
+        .row{
+            display: flex;
+        }
+    </style>
+    <main>
+        <div>
+            <h1>Login to the website</h1>
+            <div class="row">
+                <input type="text" required name="firstname" id="firstname">
+                <input type="text" required name="email" id="email">
+                <button type="button" id="logBtn">Log me in</button>
+            </div>
+        </div>
+        <div>
+            <h1>Cookies</h1>
+            <button type="button" id="cookiesBtn">Show the cookies</button>
+            
+        </div>
+    </main>
+    <script>
+        document.querySelector("#logBtn").addEventListener("click",(e)=>{
+            setCookies();
+        });
+        document.querySelector("#cookiesBtn").addEventListener("click",(e)=>{
+            showCookies();
+        });
+
+        function setCookies(){
+            let firstname = document.querySelector("#firstname").value;
+            document.cookie = `firstname=${firstname}`;
+
+            let email = document.querySelector("#email").value;
+            document.cookie = `email=${email}`;
+        };
+
+        function showCookies(){
+            let cookies = document.cookie.split(';')
+            let showBoxe=document.querySelector("#cookiesBtn").parentElement
+            cookies.forEach(cookie => {
+                let p=document.createElement("p");
+                let values = cookie.split('=');
+                p.innerHTML= `Cookies: ${values[1]}`;
+                showBoxe.appendChild(p); 
+            });
+        };
+    </script>
+</body>
+</html>

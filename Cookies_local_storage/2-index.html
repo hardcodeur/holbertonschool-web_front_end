@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS cookies/session</title>
+</head>
+<body>
+    <style>
+        .row{
+            display: flex;
+        }
+    </style>
+    <main>
+        <div>
+            <h1>Login to the website</h1>
+            <div class="row">
+                <input type="text" required name="firstname" id="firstname">
+                <input type="text" required name="email" id="email">
+                <button type="button" id="logBtn">Log me in</button>
+            </div>
+        </div>
+        <div>
+            <h1>Cookies</h1>
+            <button type="button" id="cookiesBtn">Show the cookies</button>
+            
+        </div>
+    </main>
+    <script>
+        document.querySelector("#logBtn").addEventListener("click",(e)=>{
+            setCookies();
+        });
+        document.querySelector("#cookiesBtn").addEventListener("click",(e)=>{
+            showCookies();
+        });
+
+        function setCookies(){
+            const d = new Date();
+            d.setTime(d.getTime() + (10*60*60*1000));
+            let expires =`expires= ${d.toUTCString()}`;
+
+            let firstname = document.querySelector("#firstname").value;
+            document.cookie = `firstname=${firstname};${expires}`;
+
+            let email = document.querySelector("#email").value;
+            document.cookie = `email=${email};${expires}`;
+        };
+
+        function showCookies(){
+            let showBoxe=document.querySelector("#cookiesBtn").parentElement
+            let p=document.createElement("p");
+            let email = getCookie("email");
+            let firstname = getCookie("firstname");
+            console.log(email);
+            p.innerHTML= `Email: ${email} - Firstname: ${firstname} `;
+            showBoxe.appendChild(p); 
+        };
+
+        function getCookie(name) {
+            let cookies = decodeURIComponent(document.cookie).split(';')
+            let value = "";
+            cookies.forEach(cookie => {
+                let cookieList = cookie.split('=')
+                if(name === cookieList[0].trim()){
+                    value = cookieList[1].trim();
+                }
+            });
+            return value;
+        }
+    </script>
+</body>
+</html>

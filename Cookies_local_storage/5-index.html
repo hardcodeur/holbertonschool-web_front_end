@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS cookies/session</title>
+</head>
+<body>
+    <script>
+        const availableItems = ["Shampoo","Soap","Sponge","Water"];
+        if (typeof(Storage) === "undefined"){
+            alert("Sorry, your browser does not support Web storage. Try again with a better one")
+        }else{
+            createStore();
+            displayCart();
+        }
+
+        function addItemToCart(item) {
+            localStorage.setItem(item, true);
+        }
+
+        function createStore(){
+            let ul = document.createElement("ul");
+            availableItems.forEach((item)=>{
+                let li =  document.createElement("li");
+                li.style.cursor="pointer"
+                li.addEventListener("click", ()=>{
+                    addItemToCart(item)
+                });
+                li.innerHTML=item;
+                ul.appendChild(li);
+            })
+            document.body.appendChild(ul);
+        }
+
+        function displayCart(params) {
+            if(localStorage.length !== 0){
+                let p = document.createElement("p")
+                p.innerHTML=`You previously had ${localStorage.length} items in your cart`
+                document.body.appendChild(p);
+            }
+            
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS cookies/session</title>
+</head>
+<body>
+    <script>
+        const availableItems = ["Shampoo","Soap","Sponge","Water"];
+        if (typeof(Storage) === "undefined"){
+            alert("Sorry, your browser does not support Web storage. Try again with a better one")
+        }else{
+            createStore();
+            displayCart();
+        }
+
+        function getCartFromStorage() {
+            let cardList=sessionStorage.getItem("card");
+            if(cardList){
+                return JSON.parse(cardList);
+            }else{
+                return {};
+            }
+        }
+
+
+        function addItemToCart(item) {
+            let newCard = {
+                name : item,
+                quantity : 1
+            }
+            let cardList=getCartFromStorage();
+            let storage = [newCard];
+            if(cardList && cardList.length > 0){
+                let isInCardList = false;
+
+                cardList.forEach(card => {
+                    if(card.name === item){
+                        isInCardList = true;
+                        card.quantity += 1;
+                    }
+                });
+
+                if(!isInCardList){
+                    cardList.push(newCard);
+                }
+
+                storage=cardList;
+
+                sessionStorage.setItem("card",cardList);
+            }
+
+            sessionStorage.setItem("card",JSON.stringify(storage));
+            updateCart();
+        }
+
+        function removeItemfromCart(item){
+            let cardList=getCartFromStorage();            
+            cardList.forEach((card,key) => {
+                if(card.name === item.name){
+                    cardList.pop(key)
+                }
+            });
+
+            sessionStorage.setItem("card",JSON.stringify(cardList));
+
+            displayCart();
+
+        }
+
+        function clearCart() {
+            sessionStorage.clear()
+            displayCart()
+        }
+
+        function createStore(){
+
+            let h2 = document.createElement("h2");
+            h2.innerHTML="Available products:"
+
+            let ul = document.createElement("ul");
+            availableItems.forEach((item)=>{
+                let li =  document.createElement("li");
+                li.style.cursor="pointer"
+                li.addEventListener("click", ()=>{
+                    addItemToCart(item)
+                });
+                li.innerHTML=item;
+                ul.appendChild(li);
+            });
+            document.body.appendChild(h2);
+            document.body.appendChild(ul);
+        }
+
+        function displayCart(params) {
+            let h2 = document.createElement("h2");
+            h2.innerHTML="Your cart:"
+
+            let divCardList=document.getElementById("cardList");
+            if(divCardList){
+                while (divCardList.firstChild) {
+                    divCardList.removeChild(divCardList.firstChild);
+                }
+            }else{
+                document.body.appendChild(h2);
+                let div = document.createElement("div");
+                div.id="cardList";
+                document.body.appendChild(div);
+            }
+            updateCart();
+        }
+
+        function updateCart() {
+            let divCardList=document.getElementById("cardList");
+            let cardList=getCartFromStorage();
+            if(cardList.length > 0){
+                while (divCardList.firstChild) {
+                    divCardList.removeChild(divCardList.firstChild);
+                }
+                let ul = document.createElement("ul");
+                cardList.forEach((item)=>{
+                    let li =  document.createElement("li");
+                    li.style.cursor="pointer"
+                    li.setAttribute("data-item",item.name);
+                    li.innerHTML=`${item.name} x ${item.quantity} (remove)`;
+                    li.addEventListener("click", ()=>{
+                        removeItemfromCart(item);
+                    });
+                    ul.appendChild(li);
+                });
+                divCardList.appendChild(ul);
+            }else if (cardList.length === 0){
+                let p = document.createElement("p");
+                p.innerHTML=`Your cart is empty`;
+                divCardList.appendChild(p);
+            }
+        }
+    </script>
+</body>
+</html>
